@@ -1,0 +1,16 @@
+    parcel- binding our data or applicaion
+           - create server
+           - HMR - Hot Module Replacement
+           - File Watching algorithm -- by c++
+           - caching -- for faster build
+           - dev build 
+           - Image optimization
+           - compress
+           - minification
+           -consistent Hashing
+           - Differntial Bundling - supporting old browsers
+           - code splitting
+           - Diagnostic
+           - Error handling
+           - HTTPS
+           -Tree Shaking : remove unused code

@@ -1,3 +1,94 @@
-#heading{
-    color:red;
+.navbarCom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+}
+.foodImg {
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+  /* margin-left:50px; */
+}
+
+.items {
+  display: flex;
+  justify-content: space-around;
+  font-size: 2vw;
+  cursor: pointer;
+}
+.spacingNavItem {
+  margin: 0px 40px;
+}
+.card {
+  text-decoration: none;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.card:hover {
+  box-shadow: 3px 5px 3px grey;
+  cursor: pointer;
+  background-color: lightgrey;
+  border-radius: 8px;
+}
+
+.body {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+/* .innerCard{
+    padding:20px;
+} */
+.footer {
+  border: 1px solid black;
+  height: 90px;
+  background-color: grey;
+}
+.flexItem { 
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  height: 1000px;
+  background-color: yellow;
+  display: block;
+}
+.flexCartItems {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.btn {
+  background-color: blue;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+.btn:hover {
+  background-color: green;
+}
+.ShimmerBlock {
+  display: flex;
+  flex-wrap: wrap;
+}
+.shimmerCard {
+  width: 300px;
+  height: 400px;
+  margin: 20px;
+  background-color: lightcyan;
+}
+.menu{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.menuMap{
+  border: 1px solid black;
+   display:flex;
+  justify-content: space-between;
+  align-items: center;  
+    margin:5px 25px;
+  width:50%;
+ 
 }
