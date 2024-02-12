@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Navbar from "./components/Navbar";
 import Body from "./components/Body";
@@ -10,14 +10,31 @@ import Error from "./components/Error";
 import MenuPage from "./components/MenuPage";
 import AboutUsClass from "./components/AboutUsClass";
 import Shimmer from "./components/Shimmer";
+import UserContext from "./components/utils/UserContext";
+import { Provider } from "react-redux";
+import appStore from "./components/utils/appStore";
+import Cart from "./components/Cart";
 const Grocery = lazy(() => import("./components/GroceryComponent"));
+
 const FunctionalComponent = () => {
+const [user,setUser]=useState()
+useEffect(()=>{
+  //calling api that fetches user name
+  const useName={
+    name:"techlal"
+  }
+  setUser(useName.name)
+},[])
   return (
+    <Provider store={appStore}>
+    <UserContext.Provider value={{name:user,setUser}}>
     <div>
       <Navbar />
       <Outlet />
       <Footer />
     </div>
+    </UserContext.Provider>
+    </Provider>
   );
 };
 const router = createBrowserRouter([
@@ -41,6 +58,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactUs />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
       {
         path: "/grocery",

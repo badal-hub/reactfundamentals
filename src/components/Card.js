@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./Shimmer";
-import cardData from "./utils/mockData";
+import UserContext from "./utils/UserContext";
 
 export const Card = () => {
   const [filterData, setFilterData] = useState([]);
   const [listOfData, setListOfData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [background, setBackground] = useState("white");
+  const RestaurantCardWithPromoted = withPromotedLabel(RestaurantCard);
   useEffect(() => {
     console.log("useEffect called");
 
@@ -18,19 +20,19 @@ export const Card = () => {
 
     try {
       const dataFromApi = await fetch(
-        "https://corsproxy.io?https://www.swiggy.com/mapi/homepage/getCards?lat=23.361178&lng=85.357228"
+        "https://www.swiggy.com/mapi/homepage/getCards?lat=23.361178&lng=85.357228"
       );
       console.log("dataFromApi ", dataFromApi);
 
       const jsonData = await dataFromApi.json();
-      console.log("jsonData ", jsonData?.data.success);
+      console.log("jsonData ", jsonData?.data);
 
       setListOfData(
-        jsonData?.data?.success?.cards[3]?.gridWidget?.gridElements
+        jsonData?.data?.success?.cards[4]?.gridWidget?.gridElements
           ?.infoWithStyle?.restaurants
       );
       setFilterData(
-        jsonData?.data?.success?.cards[3]?.gridWidget?.gridElements
+        jsonData?.data?.success?.cards[4]?.gridWidget?.gridElements
           ?.infoWithStyle?.restaurants
       );
     } catch (error) {
@@ -41,6 +43,7 @@ export const Card = () => {
     // setBackground("red");
     console.log("scollr called");
   };
+  const { name, setUser } = useContext(UserContext);
   return filterData?.length === 0 ? (
     <Shimmer />
   ) : (
@@ -49,9 +52,10 @@ export const Card = () => {
       style={{ background: `${background}` }}
       onScroll={() => onscrollHandler()}
     >
-      <div>
-        <div>
+      <div className="flex">
+        <div className="m-4 ">
           <input
+            className=" p-2 border border-black rounded"
             type="text"
             placeholder="search you restro name"
             value={searchText}
@@ -60,6 +64,7 @@ export const Card = () => {
             }}
           ></input>
           <button
+            className="bg-green-200 m-4 px-4 py-2 rounded-md"
             onClick={() => {
               const searchItems = listOfData.filter((element) =>
                 element.info.name
@@ -72,7 +77,7 @@ export const Card = () => {
             search
           </button>
           <button
-            className="btn"
+            className="bg-green-300 m-4 px-4 py-2 rounded-md"
             onClick={() => {
               const filterRestaurant = listOfData.filter(
                 (element) => element.info.avgRating > 4
@@ -82,35 +87,27 @@ export const Card = () => {
           >
             Filter through rating 3+
           </button>
+          <input
+            value={name}
+            className="border-black p-2"
+            onChange={(e) => setUser(e.target.value)}
+          />
         </div>
       </div>
-      <div className="flexCartItems">
+      <div className="flex flex-wrap">
         {filterData &&
           filterData.map((element) => {
             return (
               <Link
                 to={`/menu/${element?.info?.id}`}
                 key={element?.info?.id}
-                className="card"
+                className="w-[250] m-4 bg-slate-400 rounded-md hover:bg-blue-200"
               >
-                <div>
-                  <div className="innerCard">
-                    <img
-                      src={`https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/${element?.info?.cloudinaryImageId}`}
-                      alt="imgoffood"
-                      width={200}
-                    />
-                    <div>
-                      <h3> {element?.info?.name}</h3>
-                    </div>
-                    <div>
-                      <span> {element?.info?.deliveryTime}</span>
-                      <span>
-                        &nbsp; &nbsp; Rating {element?.info?.avgRating}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                {element?.info?.isOpen ? (
+                  <RestaurantCardWithPromoted restCard={element} />
+                ) : (
+                  <RestaurantCard restCard={element} />
+                )}
               </Link>
             );
           })}

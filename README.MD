@@ -3,7 +3,7 @@
            - HMR - Hot Module Replacement
            - File Watching algorithm -- by c++
            - caching -- for faster build
-           - dev build 
+           - dev build
            - Image optimization
            - compress
            - minification
@@ -14,3 +14,13 @@
            - Error handling
            - HTTPS
            -Tree Shaking : remove unused code
+
+# Redux Toolkit
+
+-Install @reduxjs/toolkit and react-redux
+-Build our store
+
+- connect our store to our app
+- Slice(cartSlice)
+- dispatch(action)
+- selector

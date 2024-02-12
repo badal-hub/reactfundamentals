@@ -1,31 +1,58 @@
 import { useParams } from "react-router-dom";
+import { createContext, useState } from "react";
+import RestaurantCategory from "./RestaurantCategory";
 import Shimmer from "./Shimmer";
 import useRestaurentDataFetch from "./utils/useRestaurentDataFetch";
 const MenuPage = () => {
-  const {id} = useParams();
-const menuData = useRestaurentDataFetch(id);
-console.log(menuData,"MENUDATA")
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const { id } = useParams();
+  const menuData = useRestaurentDataFetch(id);
+  console.log(menuData, "MENUDATA");
+  const category =
+    menuData?.data.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.filter(
+      (element) =>
+        element?.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+
   return !menuData ? (
     <Shimmer />
   ) : (
-    <div>
+    <div className="text-center ">
       <div>
-        <h2> {menuData?.data?.cards[0]?.card?.card?.info?.name}- </h2>
-        {menuData?.data?.cards[0]?.card?.card?.info?.city}
+        <h2 className="p-4 font-bold">
+          Restro Name - {menuData?.data?.cards[2]?.card?.card?.info?.name}{" "}
+        </h2>
+        Address - {menuData?.data?.cards[2]?.card?.card?.info?.city}
       </div>
       <div>
         cost for two -{" "}
-        {menuData?.data?.cards[0]?.card?.card?.info?.costForTwo / 100}
+        {menuData?.data?.cards[2]?.card?.card?.info?.costForTwo / 100}
       </div>
       <div>
-        {menuData?.data?.cards[0]?.card?.card?.info?.cuisines?.map(
+        {menuData?.data?.cards[2]?.card?.card?.info?.cuisines?.map(
           (element) => (
-            <div key={element}>.{element}&nbsp;</div>
+            <div key={element}>{element}&nbsp;</div>
           )
         )}
       </div>
-      <h3>More menu data</h3>
+
       <div>
+        {category?.map((c, index) => {
+          console.log(c, "c");
+          return (
+            <div key={c.card.card.title}>
+              <RestaurantCategory
+                data={c.card.card}
+                showItems={index === activeIndex ? true : false}
+                setActiveIndex={()=>setActiveIndex(index)}
+              />
+            </div>
+          );
+        })}
+      </div>
+      {/* <div>
         <div className="menu">
           {menuData?.data?.cards[2]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card?.itemCards?.map(
             (elem) => {
@@ -59,7 +86,7 @@ console.log(menuData,"MENUDATA")
             alt="img"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
